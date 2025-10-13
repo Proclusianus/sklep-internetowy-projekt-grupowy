@@ -1,0 +1,12 @@
+stages:
+  - build
+
+build_job:
+  stage: build
+  script:
+    - echo "Hello, GitLab CI! This is a simple build job."
+    - echo "Current branch is $CI_COMMIT_BRANCH"
+  only:
+    - main
+    - dev
+    - merge_requests
