@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wielkie Akcje i Transakcje</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+
+<header class="bg-white shadow-sm sticky top-0 z-50">
+    <nav class="container mx-auto px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center space-x-8 text-gray-700">
+            <a href="#" class="text-base font-semibold hover:text-blue-600 transition-colors">
+                Aukcje
+            </a>
+            <a href="#" class="text-base font-semibold hover:text-blue-600 transition-colors">
+                Kupno i Sprzedaż
+            </a>
+        </div>
+
+        <div class="flex items-center space-x-6 text-gray-700">
+            <a href="#" class="flex items-center space-x-2 hover:text-blue-600 transition-colors">
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+                <span class="font-semibold">Koszyk</span>
+            </a>
+            <div class="relative">
+                <button id="user-menu-button" aria-label="Moje konto" class="p-2 rounded-full hover:bg-gray-100 transition-colors">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                </button>
+                <div id="user-menu" class="absolute right-0 mt-2 w-64 bg-white rounded-md shadow-lg py-2 z-50 ring-1 ring-black ring-opacity-5 hidden">
+                    <form class="px-4 py-2 space-y-3">
+                        <div>
+                            <label for="email" class="sr-only">Email</label>
+                            <input type="email" id="email" placeholder="Email"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500" />
+                        </div>
+                        <div>
+                            <label for="password" class="sr-only">Hasło</label>
+                            <input type="password" id="password" placeholder="Hasło"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500" />
+                        </div>
+                        <button type="submit"
+                                class="w-full text-white bg-blue-500 hover:bg-blue-600 font-semibold py-2 px-4 rounded transition-colors">
+                            Zaloguj
+                        </button>
+                        <p class="text-sm text-gray-600 text-center mt-2">
+                            Nie masz konta? <a href="/register" class="text-blue-600 hover:underline">Zarejestruj się tutaj!</a>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<div class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4 my-8">
+    <img src="/img/logo_alpha.png" alt="Logo" class="w-40 h-auto md:w-52">
+    <img src="/img/napis_logo.png" alt="Napis Logo" class="h-auto max-w-xs md:max-w-sm">
+</div>
+
+<main class="container mx-auto p-8">
+    <div class="max-w-4xl mx-auto">
+        <form class="flex w-full bg-white rounded-md border border-gray-300 overflow-hidden focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-transparent shadow-sm">
+            <input
+                    type="text"
+                    placeholder="Wpisz czego szukasz..."
+                    class="w-full px-6 py-3 text-base text-gray-700 focus:outline-none"
+                    aria-label="Wyszukaj produkty"
+            />
+            <button
+                    type="submit"
+                    class="px-12 bg-blue-500 text-white font-semibold hover:bg-blue-600 transition-colors whitespace-nowrap"
+                    aria-label="Szukaj"
+            >
+                SZUKAJ
+            </button>
+        </form>
+    </div>
+</main>
+
+<script>
+    const userMenuButton = document.getElementById('user-menu-button');
+    const userMenu = document.getElementById('user-menu');
+    const dropdownWrapper = userMenuButton.parentElement;
+
+    userMenuButton.addEventListener('click', (event) => {
+        event.stopPropagation(); // Zapobiega natychmiastowemu zamknięciu po otwarciu
+        userMenu.classList.toggle('hidden');
+    });
+
+    document.addEventListener('click', (event) => {
+        // Sprawdza, czy kliknięcie było poza przyciskiem menu i samym menu
+        if (!dropdownWrapper.contains(event.target)) {
+            userMenu.classList.add('hidden');
+        }
+    });
+
+    // Opcjonalnie: Zapobieganie zamknięciu menu po kliknięciu Wewnątrz samego menu (np. na pola input)
+    userMenu.addEventListener('click', (event) => {
+        event.stopPropagation();
+    });
+</script>
+</body>
+</html>
