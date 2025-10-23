@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wielkie Akcje i Transakcje - Rejestracja</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Opcjonalne style, jeśli potrzebujesz czegoś, czego nie ma w Tailwind */
+        .address-group {
+            border: 1px solid #e2e8f0; /* border-gray-200 */
+            padding: 1rem;
+            border-radius: 0.375rem; /* rounded-md */
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans flex items-center justify-center min-h-screen">
+
+<div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-2xl">
+    <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">Zarejestruj się</h2>
+
+    <form action="#" method="POST" class="space-y-6">
+        <!-- Pola podstawowe dla każdego użytkownika -->
+        <div>
+            <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+            <input type="email" id="email" name="email" required
+                   class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+        </div>
+        <div>
+            <label for="username" class="block text-sm font-medium text-gray-700">Nazwa użytkownika</label>
+            <input type="text" id="username" name="username" required
+                   class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+        </div>
+        <div>
+            <label for="password" class="block text-sm font-medium text-gray-700">Hasło</label>
+            <input type="password" id="password" name="password" required
+                   class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+        </div>
+        <div>
+            <label for="confirm_password" class="block text-sm font-medium text-gray-700">Powtórz hasło</label>
+            <input type="password" id="confirm_password" name="confirm_password" required
+                   class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+        </div>
+
+        <!-- Wybór typu konta -->
+        <fieldset>
+            <legend class="text-base font-medium text-gray-900">Typ konta</legend>
+            <div class="mt-4 space-y-4">
+                <div class="flex items-center">
+                    <input id="account_type_individual" name="account_type" type="radio" value="individual" checked
+                           class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300">
+                    <label for="account_type_individual" class="ml-3 block text-sm font-medium text-gray-700">Osoba fizyczna</label>
+                </div>
+                <div class="flex items-center">
+                    <input id="account_type_company" name="account_type" type="radio" value="company"
+                           class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300">
+                    <label for="account_type_company" class="ml-3 block text-sm font-medium text-gray-700">Firma</label>
+                </div>
+            </div>
+        </fieldset>
+
+        <!-- Pola dla osoby fizycznej (domyślnie widoczne) -->
+        <div id="individual_fields" class="space-y-6 border-t border-gray-200 pt-6">
+            <h3 class="text-xl font-semibold text-gray-700">Dane osoby fizycznej</h3>
+            <div>
+                <label for="first_name" class="block text-sm font-medium text-gray-700">Imię</label>
+                <input type="text" id="first_name" name="first_name"
+                       class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+            </div>
+            <div>
+                <label for="last_name" class="block text-sm font-medium text-gray-700">Nazwisko</label>
+                <input type="text" id="last_name" name="last_name"
+                       class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+            </div>
+
+            <div class="address-group">
+                <h4 class="text-lg font-medium text-gray-700 mb-4">Adres</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="address_street_ind" class="block text-sm font-medium text-gray-700">Ulica</label>
+                        <input type="text" id="address_street_ind" name="address_street_ind"
+                               class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label for="address_house_nr_ind" class="block text-sm font-medium text-gray-700">Nr domu</label>
+                            <input type="text" id="address_house_nr_ind" name="address_house_nr_ind"
+                                   class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        </div>
+                        <div>
+                            <label for="address_apartment_nr_ind" class="block text-sm font-medium text-gray-700">Nr mieszkania</label>
+                            <input type="text" id="address_apartment_nr_ind" name="address_apartment_nr_ind"
+                                   class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        </div>
+                    </div>
+                    <div>
+                        <label for="address_zip_code_ind" class="block text-sm font-medium text-gray-700">Kod pocztowy</label>
+                        <input type="text" id="address_zip_code_ind" name="address_zip_code_ind"
+                               class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="address_city_ind" class="block text-sm font-medium text-gray-700">Miasto</label>
+                        <input type="text" id="address_city_ind" name="address_city_ind"
+                               class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="address_country_ind" class="block text-sm font-medium text-gray-700">Państwo</label>
+                        <input type="text" id="address_country_ind" name="address_country_ind"
+                               class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <label for="phone_nr_ind" class="block text-sm font-medium text-gray-700">Nr telefonu</label>
+                <input type="tel" id="phone_nr_ind" name="phone_nr_ind"
+                       class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+            </div>
+        </div>
+
+        <!-- Pola dla firmy (domyślnie ukryte) -->
+        <div id="company_fields" class="hidden space-y-6 border-t border-gray-200 pt-6">
+            <h3 class="text-xl font-semibold text-gray-700">Dane firmy</h3>
+            <div>
+                <label for="company_name" class="block text-sm font-medium text-gray-700">Nazwa firmy</label>
+                <input type="text" id="company_name" name="company_name"
+                       class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+            </div>
+
+            <div class="address-group">
+                <h4 class="text-lg font-medium text-gray-700 mb-4">Główny adres firmy</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="address_street_comp" class="block text-sm font-medium text-gray-700">Ulica</label>
+                        <input type="text" id="address_street_comp" name="address_street_comp"
+                               class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="address_building_locale_comp" class="block text-sm font-medium text-gray-700">Nr budynku / lokalu</label>
+                        <input type="text" id="address_building_locale_comp" name="address_building_locale_comp"
+                               class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="address_zip_code_comp" class="block text-sm font-medium text-gray-700">Kod pocztowy</label>
+                        <input type="text" id="address_zip_code_comp" name="address_zip_code_comp"
+                               class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="address_city_comp" class="block text-sm font-medium text-gray-700">Miasto</label>
+                        <input type="text" id="address_city_comp" name="address_city_comp"
+                               class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="address_country_comp" class="block text-sm font-medium text-gray-700">Państwo</label>
+                        <input type="text" id="address_country_comp" name="address_country_comp"
+                               class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <label for="nip" class="block text-sm font-medium text-gray-700">Numer NIP</label>
+                <input type="text" id="nip" name="nip"
+                       class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+            </div>
+            <div>
+                <label for="krs_id" class="block text-sm font-medium text-gray-700">ID KRS</label>
+                <input type="text" id="krs_id" name="krs_id"
+                       class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+            </div>
+
+            <div class="address-group">
+                <h4 class="text-lg font-medium text-gray-700 mb-4">Osoba kontaktowa</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="contact_person_first_name" class="block text-sm font-medium text-gray-700">Imię</label>
+                        <input type="text" id="contact_person_first_name" name="contact_person_first_name"
+                               class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="contact_person_last_name" class="block text-sm font-medium text-gray-700">Nazwisko</label>
+                        <input type="text" id="contact_person_last_name" name="contact_person_last_name"
+                               class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="contact_person_email" class="block text-sm font-medium text-gray-700">Email kontaktowy</label>
+                        <input type="email" id="contact_person_email" name="contact_person_email"
+                               class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="contact_person_phone" class="block text-sm font-medium text-gray-700">Nr telefonu kontaktowego</label>
+                        <input type="tel" id="contact_person_phone" name="contact_person_phone"
+                               class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    </div>
+                </div>
+            </div>
+
+            <div id="delivery_addresses_container" class="space-y-4">
+                <h4 class="text-lg font-medium text-gray-700">Adresy odbioru przesyłek</h4>
+                <!-- Dynamicznie dodawane/usuwane adresy -->
+                <div id="delivery_address_0" class="address-group">
+                    <h5 class="text-md font-medium text-gray-700 mb-4">Adres odbioru #1</h5>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="delivery_street_0" class="block text-sm font-medium text-gray-700">Ulica</label>
+                            <input type="text" id="delivery_street_0" name="delivery_street_0"
+                                   class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        </div>
+                        <div>
+                            <label for="delivery_building_locale_0" class="block text-sm font-medium text-gray-700">Nr budynku / lokalu</label>
+                            <input type="text" id="delivery_building_locale_0" name="delivery_building_locale_0"
+                                   class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        </div>
+                        <div>
+                            <label for="delivery_zip_code_0" class="block text-sm font-medium text-gray-700">Kod pocztowy</label>
+                            <input type="text" id="delivery_zip_code_0" name="delivery_zip_code_0"
+                                   class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        </div>
+                        <div>
+                            <label for="delivery_city_0" class="block text-sm font-medium text-gray-700">Miasto</label>
+                            <input type="text" id="delivery_city_0" name="delivery_city_0"
+                                   class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        </div>
+                        <div>
+                            <label for="delivery_country_0" class="block text-sm font-medium text-gray-700">Państwo</label>
+                            <input type="text" id="delivery_country_0" name="delivery_country_0"
+                                   class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        </div>
+                    </div>
+                </div>
+                <button type="button" id="add_delivery_address" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors text-sm">Dodaj kolejny adres odbioru</button>
+            </div>
+        </div>
+
+        <!-- Przycisk rejestracji -->
+        <button type="submit"
+                class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+            Zarejestruj się
+        </button>
+    </form>
+</div>
+
+<script>
+    const individualRadio = document.getElementById('account_type_individual');
+    const companyRadio = document.getElementById('account_type_company');
+    const individualFields = document.getElementById('individual_fields');
+    const companyFields = document.getElementById('company_fields');
+    const addDeliveryAddressBtn = document.getElementById('add_delivery_address');
+    const deliveryAddressesContainer = document.getElementById('delivery_addresses_container');
+
+    let deliveryAddressCount = 1; // Start from 1 as 0 is already in HTML
+
+    function toggleAccountTypeFields() {
+        if (individualRadio.checked) {
+            individualFields.classList.remove('hidden');
+            companyFields.classList.add('hidden');
+            // Ustawiamy atrybut 'required' dla pól osoby fizycznej
+            setRequiredFields(individualFields, true);
+            setRequiredFields(companyFields, false);
+        } else {
+            individualFields.classList.add('hidden');
+            companyFields.classList.remove('hidden');
+            // Ustawiamy atrybut 'required' dla pól firmy
+            setRequiredFields(individualFields, false);
+            setRequiredFields(companyFields, true);
+        }
+    }
+
+    function setRequiredFields(container, isRequired) {
+        const inputs = container.querySelectorAll('input, select, textarea');
+        inputs.forEach(input => {
+            // Wyłączamy 'required' tylko dla ukrytych pól, aby nie blokowały submisji formularza
+            // ale pola podstawowe jak email, username, haslo pozostają required
+            if (container.classList.contains('hidden') && input.closest('#company_fields, #individual_fields')) {
+                input.removeAttribute('required');
+            } else if (isRequired) {
+                input.setAttribute('required', 'required');
+            } else {
+                input.removeAttribute('required');
+            }
+        });
+    }
+
+    // Funkcja do dynamicznego dodawania adresów odbioru
+    function addDeliveryAddress() {
+        const newAddressId = `delivery_address_${deliveryAddressCount}`;
+        const newAddressGroup = document.createElement('div');
+        newAddressGroup.id = newAddressId;
+        newAddressGroup.classList.add('address-group');
+        newAddressGroup.innerHTML = `
+                <h5 class="text-md font-medium text-gray-700 mb-4">Adres odbioru #${deliveryAddressCount + 1}</h5>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="delivery_street_${deliveryAddressCount}" class="block text-sm font-medium text-gray-700">Ulica</label>
+                        <input type="text" id="delivery_street_${deliveryAddressCount}" name="delivery_street_${deliveryAddressCount}"
+                               class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="delivery_building_locale_${deliveryAddressCount}" class="block text-sm font-medium text-gray-700">Nr budynku / lokalu</label>
+                        <input type="text" id="delivery_building_locale_${deliveryAddressCount}" name="delivery_building_locale_${deliveryAddressCount}"
+                               class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="delivery_zip_code_${deliveryAddressCount}" class="block text-sm font-medium text-gray-700">Kod pocztowy</label>
+                        <input type="text" id="delivery_zip_code_${deliveryAddressCount}" name="delivery_zip_code_${deliveryAddressCount}"
+                               class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="delivery_city_${deliveryAddressCount}" class="block text-sm font-medium text-gray-700">Miasto</label>
+                        <input type="text" id="delivery_city_${deliveryAddressCount}" name="delivery_city_${deliveryAddressCount}"
+                               class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="delivery_country_${deliveryAddressCount}" class="block text-sm font-medium text-gray-700">Państwo</label>
+                        <input type="text" id="delivery_country_${deliveryAddressCount}" name="delivery_country_${deliveryAddressCount}"
+                               class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    </div>
+                </div>
+                <button type="button" class="remove-delivery-address mt-4 px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors text-sm">Usuń adres</button>
+            `;
+        deliveryAddressesContainer.insertBefore(newAddressGroup, addDeliveryAddressBtn);
+
+        // Po dodaniu nowego bloku, upewniamy się, że jego pola są również ustawione jako wymagane,
+        // jeśli aktualnie wybrana jest firma
+        if (companyRadio.checked) {
+            setRequiredFields(newAddressGroup, true);
+        }
+
+        deliveryAddressCount++;
+
+        newAddressGroup.querySelector('.remove-delivery-address').addEventListener('click', () => {
+            newAddressGroup.remove();
+        });
+    }
+
+
+    // Event Listeners
+    individualRadio.addEventListener('change', toggleAccountTypeFields);
+    companyRadio.addEventListener('change', toggleAccountTypeFields);
+    addDeliveryAddressBtn.addEventListener('click', addDeliveryAddress);
+
+    // Inicjalizacja formularza przy ładowaniu strony
+    toggleAccountTypeFields();
+</script>
+</body>
+</html>
