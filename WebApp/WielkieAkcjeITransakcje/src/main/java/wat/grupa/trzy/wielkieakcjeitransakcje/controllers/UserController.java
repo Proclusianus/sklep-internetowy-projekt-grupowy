@@ -1,10 +1,19 @@
 package wat.grupa.trzy.wielkieakcjeitransakcje.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import wat.grupa.trzy.wielkieakcjeitransakcje.services.UserService;
 
 @Controller
 public class UserController {
+
+    private final UserService userService;
+
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping("/userData")
     public String getUserDataPage() {
@@ -40,5 +49,4 @@ public class UserController {
     public String getFirmStatsPage() {
         return "userpanel/firmStats";
     }
-
 }

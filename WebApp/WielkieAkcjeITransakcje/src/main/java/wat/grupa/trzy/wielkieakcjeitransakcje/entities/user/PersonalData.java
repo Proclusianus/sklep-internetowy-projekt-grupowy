@@ -1,21 +1,38 @@
 package wat.grupa.trzy.wielkieakcjeitransakcje.entities.user;
 
 import wat.grupa.trzy.wielkieakcjeitransakcje.entities.payment.PersonalPayment;
-
+import java.util.ArrayList;
 import java.util.List;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "personal_data")
 public class PersonalData {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "surname")
     private String surname;
-    private List<Address> addresses;
-    private PersonalPayment paymentInformation;
+
+    @Column(name = "phone_number")
     private String phoneNumber;
 
-    public PersonalData(String name, String surname, List<Address> addresses, PersonalPayment paymentInformation, String phoneNumber) {
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "payment_information_id")
+    private PersonalPayment paymentInformation;
+
+    @OneToMany(mappedBy = "personalData", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Address> addresses = new ArrayList<>();
+
+    public PersonalData() {}
+    public PersonalData(String name, String surname, String phoneNumber) {
         this.name = name;
         this.surname = surname;
-        this.addresses = addresses;
-        this.paymentInformation = paymentInformation;
         this.phoneNumber = phoneNumber;
     }
 
