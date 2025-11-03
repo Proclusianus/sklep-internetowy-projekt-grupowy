@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import wat.grupa.trzy.wielkieakcjeitransakcje.enums.ADDRESS_TYPE;
 
 @Entity
-@Table(name = "Address")
+@Table(name = "address")
 public class Address {
 
     @Id
@@ -68,7 +68,9 @@ public class Address {
     public String getZipcode() { return zipcode; }
     public String getCity() { return city; }
     public String getCountry() { return country; }
-    //public PersonalData getPersonalData() { return personalData; }
+    public PersonalData getPersonalData() { return personalData; }
+    public BusinessData getBusinessDataHQ() { return businessDataHQ; }
+    public BusinessData getBusinessDataDelivery() { return businessDataDelivery; }
 
     // Setters
     public void setAddressType(ADDRESS_TYPE addressType) { this.addressType = addressType; }
@@ -78,5 +80,7 @@ public class Address {
     public void setZipcode(String zipcode) { this.zipcode = zipcode; }
     public void setCity(String city) { this.city = city; }
     public void setCountry(String country) { this.country = country; }
-    //public void setPersonalData(PersonalData personalData) { this.personalData = personalData; }
+    public void setPersonalData(PersonalData personalData) { this.personalData = personalData; }
+    public void setBusinessDataHQ(BusinessData businessDataHQ) { this.businessDataHQ = businessDataHQ; }
+    public void setBusinessDataDelivery(BusinessData businessDataDelivery) { this.businessDataDelivery = businessDataDelivery; }
 }

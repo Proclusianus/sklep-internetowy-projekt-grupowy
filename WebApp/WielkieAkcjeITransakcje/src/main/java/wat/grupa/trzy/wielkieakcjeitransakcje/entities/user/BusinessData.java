@@ -51,4 +51,7 @@ public class BusinessData {
     public void setFirmName(String firmName) { this.firmName = firmName; }
     public void setNip(String nip) { this.nip = nip; }
     public void setKrsId(String krsId) { this.krsId = krsId; }
+    public void setHqAddress(Address hqAddress) { this.hqAddress = hqAddress; }
+    public void setDeliveryAddresses(List<Address> deliveryAddresses) { this.deliveryAddresses = deliveryAddresses; }
+    public void setContactPersonFirm(ContactPerson contactPersonFirm) { this.contactPersonFirm = contactPersonFirm; }
 }

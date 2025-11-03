@@ -104,6 +104,14 @@
     userMenu.addEventListener('click', (event) => {
         event.stopPropagation();
     });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('registration_status') === 'success') {
+            alert('Rejestracja pomyślna! Witamy na naszej stronie.');
+            history.replaceState(null, '', window.location.pathname);
+        }
+    });
 </script>
 </body>
 </html>

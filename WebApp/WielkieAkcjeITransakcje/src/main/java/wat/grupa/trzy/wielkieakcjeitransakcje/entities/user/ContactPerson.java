@@ -49,6 +49,8 @@ public class ContactPerson {
     public String getSurname() { return surname; }
     public String getEmail() { return email; }
     public String getPhoneNumber() { return phoneNumber; }
+    public AdminData getAdminData() { return adminData; }
+    public BusinessData getBusinessData() { return businessData; }
 
     // Setters
     public void setContactPersonType(CONTACT_PERSON_TYPE contactPersonType) { this.contactPersonType = contactPersonType; }
@@ -56,4 +58,6 @@ public class ContactPerson {
     public void setSurname(String surname) { this.surname = surname; }
     public void setEmail(String email) { this.email = email; }
     public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
+    public void setAdminData(AdminData adminData) { this.adminData = adminData; }
+    public void setBusinessData(BusinessData businessData) { this.businessData = businessData; }
 }
