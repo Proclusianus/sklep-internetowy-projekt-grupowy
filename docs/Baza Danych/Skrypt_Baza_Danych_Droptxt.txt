@@ -1,0 +1,17 @@
+DROP TABLE IF EXISTS `transaction_history`;
+DROP TABLE IF EXISTS `shop_order`;
+DROP TABLE IF EXISTS `sessions`;
+DROP TABLE IF EXISTS `product`;
+DROP TABLE IF EXISTS `personal_data`;
+DROP TABLE IF EXISTS `order_item`;
+DROP TABLE IF EXISTS `oferta`;
+DROP TABLE IF EXISTS `gift_card_data`;
+DROP TABLE IF EXISTS `countries`;
+DROP TABLE IF EXISTS `contact_person`;
+DROP TABLE IF EXISTS `confirmation_tokens`;
+DROP TABLE IF EXISTS `card_data`;
+DROP TABLE IF EXISTS `business_data`;
+DROP TABLE IF EXISTS `bank_account_data`;
+DROP TABLE IF EXISTS `auction`;
+DROP TABLE IF EXISTS `address`;
+DROP TABLE IF EXISTS `user_data`;

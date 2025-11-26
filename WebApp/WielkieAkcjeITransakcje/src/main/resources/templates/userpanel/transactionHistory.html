@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Historia Transakcji - Wielkie Akcje i Transakcje</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <th:block th:insert="~{fragments/common-head :: favicons}"></th:block>
+</head>
+<body class="bg-gray-100 font-sans text-gray-800">
+
+<!-- Header -->
+<div th:replace="~{userpanel/fragments/header :: header}"></div>
+
+<div class="container mx-auto px-4 py-8 max-w-6xl">
+
+    <!-- Nagłówek i powrót -->
+    <div class="flex justify-between items-center mb-6">
+        <div>
+            <h2 class="text-3xl font-bold text-gray-700">Historia Transakcji</h2>
+            <p class="text-gray-500 mt-1">Przeglądaj swoje wydatki i doładowania</p>
+        </div>
+        <a href="/wallet" class="flex items-center text-blue-600 hover:text-blue-800 font-semibold transition-colors">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            Wróć do portfela
+        </a>
+    </div>
+
+    <!-- Tabela Transakcji -->
+    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+
+        <!-- Pusty stan (gdy brak transakcji) -->
+        <div th:if="${transactionPage.content.isEmpty()}" class="p-10 text-center">
+            <div class="text-gray-400 mb-4">
+                <svg class="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+            </div>
+            <h3 class="text-xl font-medium text-gray-600">Brak historii transakcji</h3>
+            <p class="text-gray-500">Nie wykonałeś jeszcze żadnych operacji na swoim koncie.</p>
+        </div>
+
+        <!-- Tabela z danymi -->
+        <div th:if="${!transactionPage.content.isEmpty()}" class="overflow-x-auto">
+            <table class="min-w-full leading-normal">
+                <thead>
+                <tr>
+                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Data
+                    </th>
+                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Typ
+                    </th>
+                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Opis / Metoda
+                    </th>
+                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Kwota
+                    </th>
+                    <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Saldo po
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="t : ${transactionPage.content}" class="odd:bg-white even:bg-gray-50 hover:bg-gray-100 transition-colors">
+
+                    <!-- 1. Data -->
+                    <td class="px-5 py-5 border-b border-gray-200 text-sm">
+                        <p class="text-gray-900 whitespace-no-wrap font-medium"
+                           th:text="${#temporals.format(t.createdAt, 'dd-MM-yyyy HH:mm')}">
+                            12-05-2024 14:30
+                        </p>
+                    </td>
+
+                    <!-- 2. Typ Transakcji (Badge) -->
+                    <td class="px-5 py-5 border-b border-gray-200 text-sm">
+                        <!-- Styl dla Zakupów -->
+                        <span th:if="${t.transactionType.name() == 'PAYMENT'}"
+                              class="relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
+        <span aria-hidden="true" class="absolute inset-0 bg-red-200 opacity-50 rounded-full"></span>
+        <span class="relative">Zakup</span>
+    </span>
+
+                        <!-- Styl dla WSZYSTKICH Doładowań (sprawdzamy czy zaczyna się od TOP_UP) -->
+                        <span th:if="${#strings.startsWith(t.transactionType.name(), 'TOP_UP')}"
+                              class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
+        <span aria-hidden="true" class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
+        <span class="relative">Doładowanie</span>
+    </span>
+
+                        <!-- Styl dla Innych (Zwroty, Bonusy) - jeśli nie PAYMENT i nie zaczyna się od TOP_UP -->
+                        <span th:if="${t.transactionType.name() != 'PAYMENT' and !#strings.startsWith(t.transactionType.name(), 'TOP_UP')}"
+                              class="relative inline-block px-3 py-1 font-semibold text-blue-900 leading-tight">
+        <span aria-hidden="true" class="absolute inset-0 bg-blue-200 opacity-50 rounded-full"></span>
+        <span class="relative" th:text="${t.transactionType}">INNE</span>
+    </span>
+                    </td>
+
+                    <!-- 3. Opis -->
+                    <td class="px-5 py-5 border-b border-gray-200 text-sm">
+                        <p class="text-gray-900 whitespace-no-wrap" th:text="${t.desc}">Opis transakcji</p>
+
+                        <!-- Detale metody płatności (opcjonalnie, małą czcionką) -->
+                        <div class="text-gray-400 text-xs mt-1">
+                            <span th:if="${t.usedCard != null}" th:text="'Karta: ' + ${t.usedCard.maskedNumber}"></span>
+                            <span th:if="${t.usedBankAccount != null}" th:text="'Konto: ' + ${t.usedBankAccount.iban}"></span>
+                            <span th:if="${t.usedGiftCard != null}">Gift Card</span>
+                        </div>
+                    </td>
+
+                    <!-- 4. Kwota (Kolorowana) -->
+                    <td class="px-5 py-5 border-b border-gray-200 text-sm text-right font-bold">
+                        <!-- Jeśli to ZAKUP -> Czerwony Minus -->
+                        <span th:if="${t.transactionType.name() == 'PAYMENT'}" class="text-red-600">
+                                -<span th:text="${t.amount}"></span>
+                            </span>
+
+                        <!-- Jeśli to DOŁADOWANIE -> Zielony Plus -->
+                        <span th:if="${t.transactionType.name() != 'PAYMENT'}" class="text-green-600">
+                                +<span th:text="${t.amount}"></span>
+                            </span>
+                        <span class="text-xs font-normal text-gray-500"> BOBUX</span>
+                    </td>
+
+                    <!-- 5. Saldo Po -->
+                    <td class="px-5 py-5 border-b border-gray-200 text-sm text-right text-gray-600">
+                        <span th:text="${t.balanceAfter}">1000</span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <!-- Paginacja (wyświetlana tylko jeśli jest więcej niż 1 strona) -->
+            <div th:if="${transactionPage.totalPages > 1}" class="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between">
+                <span class="text-xs xs:text-sm text-gray-900">
+                    Strona <span th:text="${transactionPage.number + 1}">1</span> z <span th:text="${transactionPage.totalPages}">10</span>
+                </span>
+
+                <div class="inline-flex mt-2 xs:mt-0">
+                    <!-- Przycisk Poprzednia -->
+                    <a th:href="@{/transactionHistory(page=${transactionPage.number - 1})}"
+                       th:classappend="${transactionPage.first} ? 'pointer-events-none opacity-50' : ''"
+                       class="text-sm bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-l">
+                        Poprzednia
+                    </a>
+                    <!-- Przycisk Następna -->
+                    <a th:href="@{/transactionHistory(page=${transactionPage.number + 1})}"
+                       th:classappend="${transactionPage.last} ? 'pointer-events-none opacity-50' : ''"
+                       class="text-sm bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-r">
+                        Następna
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

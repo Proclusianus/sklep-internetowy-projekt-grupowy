@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Aukcje</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+
+
+<div th:replace="~{userpanel/fragments/public-header :: public-header}"></div>
+
+<main class="container mx-auto p-8">
+    <h1 class="text-4xl font-bold mb-8 text-orange-600">Trwające Aukcje</h1>
+
+    <div th:if="${producty.isEmpty()}" class="p-4 bg-yellow-100 text-yellow-800 rounded">
+        Brak aktywnych aukcji w tym momencie.
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div th:each="product : ${producty}" class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col">
+            <img th:src="${product.imageUrl != null ? product.imageUrl : 'https://via.placeholder.com/300'%7D}"
+                 class="w-full h-48 object-cover"
+                 alt="Zdjęcie produktu">
+
+            <div class="p-4 flex flex-col flex-grow">
+                <h3 class="font-bold text-lg" th:text="${product.name}">Name</h3>
+
+
+                <div class="mt-2 text-red-600 font-bold text-xl">
+
+                    <span th:if="${product.auction != null}"
+                          th:text="${product.auction.aktualnaCena} + ' zł'">
+                    </span>
+
+                    <span th:if="${product.auction == null}">0.00 zł</span>
+                </div>
+                <p class="text-xs text-gray-500 uppercase font-bold">Aktualna oferta</p>
+
+                <div class="mt-auto pt-4">
+                    <a th:if="${product.auction != null}"
+                       th:href="@{/auction/szczegoly/{id}(id=${product.auction.id})}"
+                       class="block w-full text-center bg-orange-500 text-white py-2 rounded hover:bg-orange-600 font-bold">
+                        Licytuj
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dodaj Konto Bankowe - Wielkie Akcje</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans text-gray-800">
+
+<!-- Header -->
+<div th:replace="~{userpanel/fragments/header :: header}"></div>
+
+<div class="container mx-auto px-4 py-12 max-w-md">
+
+    <!-- Komunikat błędu -->
+    <div th:if="${errorMessage}" class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+        <strong class="font-bold">Błąd!</strong>
+        <span class="block sm:inline" th:text="${errorMessage}"></span>
+    </div>
+
+    <div class="bg-white rounded-lg shadow-lg p-8">
+        <h2 class="text-2xl font-bold mb-6 text-gray-700 text-center">Dodaj konto bankowe</h2>
+
+        <form th:action="@{/wallet/add-bank-account}" method="post" th:object="${bankAccountDto}" class="space-y-6">
+
+            <div>
+                <label for="iban" class="block text-sm font-medium text-gray-700 mb-2">Numer konta (IBAN)</label>
+                <div class="relative">
+                    <input type="text" id="iban" name="iban"
+                           placeholder="PL 00 0000 0000 0000 0000 0000 0000"
+                           class="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 tracking-wide uppercase"
+                           required>
+                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                        <svg class="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
+                        </svg>
+                    </div>
+                </div>
+                <p class="text-xs text-gray-500 mt-1">Numer konta w formacie IBAN (np. PL...)</p>
+            </div>
+
+            <div class="flex items-center justify-between space-x-4">
+                <a href="/wallet" class="w-1/2 text-center text-gray-600 border border-gray-300 hover:bg-gray-50 font-medium py-2 px-4 rounded transition">
+                    Anuluj
+                </a>
+                <button type="submit" class="w-1/2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition shadow-md">
+                    Zapisz konto
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Szczegóły Zamówienia</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <th:block th:insert="~{fragments/common-head :: favicons}"></th:block>
+</head>
+<body class="bg-gray-100 font-sans">
+
+<!-- Nagłówek panelu użytkownika -->
+<div th:replace="~{userpanel/fragments/header :: header}"></div>
+
+<main class="container mx-auto px-6 py-8 mt-4">
+    <div class="bg-white p-8 rounded-lg shadow-lg">
+
+        <!-- Nagłówek karty zamówienia -->
+        <div class="flex justify-between items-center border-b pb-4 mb-6">
+            <h2 class="text-2xl font-bold">Szczegóły zamówienia #<span th:text="${order.id}"></span></h2>
+            <a href="/orderHistory" class="text-gray-600 hover:text-blue-600 transition-colors">Powrót do listy</a>
+        </div>
+
+        <!-- Sekcja informacji ogólnych i adresu -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <div>
+                <h3 class="font-bold text-lg mb-2">Dane dostawy:</h3>
+                <!-- Używamy nowej nazwy: deliveryAddressSnapshot -->
+                <!-- whitespace-pre-line zachowuje łamanie linii w adresie -->
+                <p class="whitespace-pre-line text-gray-700" th:text="${order.deliveryAddressSnapshot}"></p>
+            </div>
+            <div class="text-right">
+                <!-- Używamy nowej nazwy: orderDate -->
+                <p class="text-gray-600">Data: <span th:text="${#temporals.format(order.orderDate, 'dd-MM-yyyy HH:mm')}"></span></p>
+                <p class="text-gray-600">Status: <span class="font-bold text-green-600" th:text="${order.status}"></span></p>
+            </div>
+        </div>
+
+        <!-- Lista productów -->
+        <h3 class="font-bold text-xl mb-4">Producty:</h3>
+        <div class="space-y-4">
+            <!-- Używamy nowej nazwy listy: orderItems -->
+            <div th:each="item : ${order.orderItems}" class="flex justify-between items-center border-b py-4 last:border-0">
+                <div>
+                    <!-- Używamy: item.product.name -->
+                    <p class="font-bold text-lg" th:text="${item.product.name}">Name Productu</p>
+
+                    <p class="text-sm text-gray-500">
+                        Sprzedawca:
+                        <!-- Używamy: item.product.seller -->
+                        <span th:if="${item.product.seller != null}" th:text="${item.product.seller.username}"></span>
+                        <span th:if="${item.product.seller == null}">Nieznany (Konto usunięte)</span>
+                    </p>
+                </div>
+                <!-- Używamy nowej nazwy ceny: priceAtPurchase -->
+                <p class="font-bold" th:text="${item.priceAtPurchase} + ' zł'"></p>
+            </div>
+        </div>
+
+        <!-- Podsumowanie kosztów -->
+        <div class="mt-8 text-right border-t pt-4">
+            <!-- Używamy nowej nazwy sumy: totalAmount -->
+            <p class="text-2xl font-bold">Suma: <span th:text="${order.totalAmount} + ' zł'"></span></p>
+        </div>
+    </div>
+</main>
+
+</body>
+</html>

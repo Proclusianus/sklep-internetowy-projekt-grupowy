@@ -1,0 +1,182 @@
+SET NAMES utf8mb4;
+
+-- 1. Tabela: personal_data
+CREATE TABLE IF NOT EXISTS `personal_data` (
+  `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
+  `name` VARCHAR(255),
+  `surname` VARCHAR(255),
+  `phone_number` VARCHAR(20)
+);
+
+-- 2. Tabela: countries
+CREATE TABLE IF NOT EXISTS `countries` (
+  `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
+  `name_pl` VARCHAR(255),
+  `code_iso_alpha2` VARCHAR(2),
+  `admin_area_level_1_label` VARCHAR(255),
+  `admin_area_level_2_label` VARCHAR(255),
+  `admin_area_level_3_label` VARCHAR(255),
+  `admin_area_level_4_label` VARCHAR(255)
+);
+
+-- 3. Tabela: address
+CREATE TABLE IF NOT EXISTS `address` (
+  `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
+  `address_type` VARCHAR(50),
+  `street` VARCHAR(255),
+  `house_number` VARCHAR(20),
+  `apartment_number` VARCHAR(20),
+  `city` VARCHAR(255),
+  `zip_code` VARCHAR(20),
+  `country` VARCHAR(255),
+  `business_delivery_address_id` BIGINT,
+  `personal_data_id` BIGINT,
+  `administrative_area_level_1` VARCHAR(255),
+  `administrative_area_level_2` VARCHAR(255),
+  `administrative_area_level_3` VARCHAR(255),
+  `administrative_area_level_4` VARCHAR(255)
+);
+
+-- 4. Tabela: contact_person
+CREATE TABLE IF NOT EXISTS `contact_person` (
+  `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
+  `contact_person_type` VARCHAR(50),
+  `name` VARCHAR(255),
+  `surname` VARCHAR(255),
+  `email` VARCHAR(255),
+  `phone_number` VARCHAR(20)
+);
+
+-- 5. Tabela: business_data
+CREATE TABLE IF NOT EXISTS `business_data` (
+  `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
+  `firm_name` VARCHAR(255),
+  `krs_id` VARCHAR(50),
+  `nip` VARCHAR(50),
+  `contact_person_id` BIGINT,
+  `hq_address_id` BIGINT
+);
+
+-- 6. Tabela: user_data
+CREATE TABLE IF NOT EXISTS `user_data` (
+  `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
+  `username` VARCHAR(255),
+  `email` VARCHAR(255),
+  `password_hash` VARCHAR(255),
+  `account_type` VARCHAR(50),
+  `enabled` BIT(1) DEFAULT 1,
+  `wallet_id` BIGINT,
+  `personal_data_id` BIGINT,
+  `business_data_id` BIGINT,
+  `admin_data_id` BIGINT
+);
+
+-- 7. Tabela: sessions
+CREATE TABLE IF NOT EXISTS `sessions` (
+  `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
+  `session` VARCHAR(255),
+  `user_id` BIGINT
+);
+
+-- 8. Tabela: confirmation_tokens (brak danych w dumpie, struktura standardowa)
+CREATE TABLE IF NOT EXISTS `confirmation_tokens` (
+  `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
+  `token` VARCHAR(255),
+  `user_id` BIGINT,
+  `created_at` DATETIME,
+  `expires_at` DATETIME
+);
+
+-- 9. Tabela: product
+-- Uwaga: Tabela zawiera zduplikowane nazwy kolumn (np. name/nazwa, price/cena) zgodnie z INSERT
+CREATE TABLE IF NOT EXISTS `product` (
+  `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
+  `name` VARCHAR(255),
+  `nazwa` VARCHAR(255),
+  `description` TEXT,
+  `opis` TEXT,
+  `price` DECIMAL(10,2),
+  `cena` DECIMAL(10,2),
+  `category` VARCHAR(255),
+  `kategoria` VARCHAR(255),
+  `image_url` VARCHAR(512),
+  `sell_type` VARCHAR(50),
+  `seller_id` BIGINT
+);
+
+-- 10. Tabela: auction
+CREATE TABLE IF NOT EXISTS `auction` (
+  `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
+  `aktywna` BIT(1),
+  `aktualna_cena` DECIMAL(10,2),
+  `cena_wywolawcza` DECIMAL(10,2),
+  `data_zakonczenia` DATETIME,
+  `product_id` BIGINT,
+  `sprzedajacy_user_id` BIGINT
+);
+
+-- 11. Tabela: oferta
+CREATE TABLE IF NOT EXISTS `oferta` (
+  `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
+  `kwota` DECIMAL(10,2),
+  `data_zlozenia` DATETIME,
+  `aukcja_id` BIGINT,
+  `licytujacy_id` BIGINT
+);
+
+-- 12. Tabela: shop_order
+CREATE TABLE IF NOT EXISTS `shop_order` (
+  `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
+  `order_date` DATETIME,
+  `total_amount` DECIMAL(10,2),
+  `status` VARCHAR(50),
+  `delivery_address_snapshot` TEXT,
+  `buyer_id` BIGINT,
+  `auction_receipt_id` BIGINT
+);
+
+-- 13. Tabela: order_item
+CREATE TABLE IF NOT EXISTS `order_item` (
+  `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
+  `price_at_purchase` DECIMAL(10,2),
+  `product_id` BIGINT,
+  `order_id` BIGINT
+);
+
+-- 14. Tabela: bank_account_data
+CREATE TABLE IF NOT EXISTS `bank_account_data` (
+  `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
+  `iban` VARCHAR(34),
+  `wallet_id` BIGINT
+);
+
+-- 15. Tabela: card_data
+CREATE TABLE IF NOT EXISTS `card_data` (
+  `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
+  `card_number_masked` VARCHAR(20),
+  `card_number_hash` VARCHAR(255),
+  `wallet_id` BIGINT
+);
+
+-- 16. Tabela: gift_card_data
+CREATE TABLE IF NOT EXISTS `gift_card_data` (
+  `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
+  `code` VARCHAR(50),
+  `amount_to_add` DECIMAL(10,2)
+);
+
+-- 17. Tabela: transaction_history
+CREATE TABLE IF NOT EXISTS `transaction_history` (
+  `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
+  `amount` DECIMAL(10,2),
+  `balance_after` DECIMAL(10,2),
+  `created_at` DATETIME,
+  `description` VARCHAR(255),
+  `transaction_type` VARCHAR(50),
+  `wallet_id` BIGINT,
+  `shop_order_id` BIGINT,
+  `order_data_id` BIGINT,
+  `used_bank_account_id` BIGINT,
+  `used_card_id` BIGINT,
+  `giftcard_id` BIGINT
+);

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Zamówienie - Dane</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <th:block th:insert="~{fragments/common-head :: favicons}"></th:block>
+</head>
+<body class="bg-gray-100 font-sans">
+
+<div th:replace="~{userpanel/fragments/header :: header}"></div>
+
+<main class="container mx-auto px-6 py-8 mt-4">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-2xl mx-auto">
+        <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">Dane do wysyłki</h2>
+
+        <form th:action="@{/checkout/details}" th:object="${details}" method="POST" class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Imię</label>
+                    <input type="text" th:field="*{imie}" required class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Nazwisko</label>
+                    <input type="text" th:field="*{nazwisko}" required class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Ulica</label>
+                <input type="text" th:field="*{ulica}" required class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md">
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Numer domu/lokalu</label>
+                    <input type="text" th:field="*{numerDomu}" required class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Kod pocztowy</label>
+                    <input type="text" th:field="*{kodPocztowy}" required class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Miasto</label>
+                <input type="text" th:field="*{miasto}" required class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Telefon</label>
+                <input type="text" th:field="*{telefon}" required class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md">
+            </div>
+
+            <button type="submit" class="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded hover:bg-blue-700 transition-colors">
+                Przejdź do płatności
+            </button>
+        </form>
+    </div>
+</main>
+
+</body>
+</html>

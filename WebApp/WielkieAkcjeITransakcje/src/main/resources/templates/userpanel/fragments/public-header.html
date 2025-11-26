@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+<header th:fragment="public-header" class="bg-white shadow-sm sticky top-0 z-50">
+    <!-- Dodano 'relative' do kontenera, aby logo mogło się wyśrodkować względem niego -->
+    <nav class="container mx-auto px-6 py-4 flex items-center justify-between relative">
+
+        <!-- Lewa strona nawigacji -->
+        <div class="flex items-center space-x-8 text-gray-700">
+            <a href="/aukcje" class="text-base font-semibold hover:text-blue-600 transition-colors">Aukcje</a>
+            <a href="/kupno-sprzedaz" class="text-base font-semibold hover:text-blue-600 transition-colors">Kupno i Sprzedaż</a>
+        </div>
+
+        <!-- ŚRODEK: Logo jako przycisk Home -->
+        <!-- Używamy pozycjonowania absolutnego, aby było idealnie na środku -->
+        <a href="/" class="absolute left-1/2 transform -translate-x-1/2 hover:opacity-80 transition-opacity">
+            <!-- Ścieżka /img/... odnosi się do resources/static/img/... -->
+            <img src="/img/napis_logo.png" alt="Strona Główna" class="h-12 w-auto">
+        </a>
+
+        <!-- Prawa strona nawigacji -->
+        <div class="flex items-center space-x-6 text-gray-700">
+
+            <!-- INTERAKTYWNY KOSZYK -->
+            <div class="relative group">
+                <a href="/koszyk" class="flex items-center space-x-2 p-2 hover:bg-gray-100 rounded-md transition-colors">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                    <span class="font-semibold">Koszyk</span>
+                    <span th:if="${cartItemCount > 0}" class="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center" th:text="${cartItemCount}"></span>
+                </a>
+                <div th:if="${!cartItemsPreview.isEmpty()}" class="absolute right-0 mt-1 w-80 bg-white rounded-md shadow-lg p-4 z-50 ring-1 ring-black ring-opacity-5 hidden group-hover:block">
+                    <h3 class="font-bold text-lg mb-4">Ostatnio dodane:</h3>
+                    <div class="space-y-3">
+                        <div th:each="item : ${cartItemsPreview}" class="flex items-center space-x-3">
+                            <img src="https://via.placeholder.com/50" alt="Product" class="w-12 h-12 rounded object-cover">
+                            <div class="flex-grow">
+                                <!-- ZMIANA: .name -->
+                                <p class="font-semibold text-sm" th:text="${item.name}">Name Productu</p>
+                                <!-- ZMIANA: .price -->
+                                <p class="text-gray-600 text-xs" th:text="${#numbers.formatDecimal(item.price, 1, 'WHITESPACE', 2, 'COMMA')} + ' zł'">Cena</p>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="/koszyk" class="block w-full text-center mt-4 bg-blue-500 text-white py-2 rounded hover:bg-blue-600">Zobacz cały koszyk</a>
+                </div>
+            </div>
+
+            <!-- DYNAMICZNY BLOK UŻYTKOWNIKA -->
+            <div class="relative">
+                <div sec:authorize="isAuthenticated()" class="flex items-center space-x-4">
+                    <a href="/userData" class="text-white bg-blue-500 hover:bg-blue-600 font-semibold py-2 px-4 rounded transition-colors">Moje Konto</a>
+                    <a th:href="@{/logout}" class="text-gray-700 hover:text-red-600 font-semibold">Wyloguj</a>
+                </div>
+                <div sec:authorize="!isAuthenticated()">
+                    <button id="user-menu-button" aria-label="Moje konto" class="p-2 rounded-full hover:bg-gray-100 transition-colors">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                    </button>
+                    <div id="user-menu" class="absolute right-0 mt-2 w-64 bg-white rounded-md shadow-lg py-2 z-50 ring-1 ring-black ring-opacity-5 hidden">
+                        <form th:action="@{/login}" method="POST" class="px-4 py-2 space-y-3">
+                            <div>
+                                <label for="username" class="sr-only">Email</label>
+                                <input type="email" id="username" name="username" placeholder="Email" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500" />
+                            </div>
+                            <div>
+                                <label for="password" class="sr-only">Hasło</label>
+                                <input type="password" id="password" name="password" placeholder="Hasło" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500" />
+                            </div>
+                            <button type="submit" class="w-full text-white bg-blue-500 hover:bg-blue-600 font-semibold py-2 px-4 rounded transition-colors">Zaloguj</button>
+                            <p class="text-sm text-gray-600 text-center mt-2">
+                                Nie masz konta? <a href="/register" class="text-blue-600 hover:underline">Zarejestruj się tutaj!</a>
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+                 const userMenuButton = document.getElementById('user-menu-button');
+                 const userMenu = document.getElementById('user-menu');
+
+                 // Sprawdzamy czy elementy istnieją (są widoczne tylko dla niezalogowanych)
+                 if (userMenuButton && userMenu) {
+                     const dropdownWrapper = userMenuButton.parentElement;
+
+                     // Kliknięcie w ikonkę
+                     userMenuButton.addEventListener('click', (event) => {
+                         event.stopPropagation(); // Zapobiegaj propagacji, aby click-outside nie zamknął od razu
+                         userMenu.classList.toggle('hidden');
+                     });
+
+                     // Kliknięcie poza menu (zamykanie)
+                     document.addEventListener('click', (event) => {
+                         if (!dropdownWrapper.contains(event.target)) {
+                             userMenu.classList.add('hidden');
+                         }
+                     });
+
+                     // Kliknięcie wewnątrz menu nie powinno go zamykać (opcjonalne)
+                     userMenu.addEventListener('click', (event) => {
+                         event.stopPropagation();
+                     });
+                 }
+             });
+    </script>
+</header>
+</body>
+</html>

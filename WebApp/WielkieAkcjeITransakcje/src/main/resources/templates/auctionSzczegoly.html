@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Licytacja</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+<div th:replace="~{userpanel/fragments/public-header :: public-header}"></div>
+
+<div class="container mx-auto p-8">
+    <div class="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col md:flex-row max-w-5xl mx-auto">
+
+        <div class="w-full md:w-1/2 p-6 border-r">
+            <img src="https://via.placeholder.com/500" class="w-full rounded-lg mb-6 shadow-sm">
+            <h1 class="text-3xl font-bold mb-2" th:text="${auction.product.name}">Name</h1>
+            <p class="text-gray-600" th:text="${auction.product.description}">Description</p>
+        </div>
+
+        <div class="w-full md:w-1/2 p-6 bg-gray-50 flex flex-col">
+            <div class="mb-6">
+                <p class="text-gray-500 text-sm">Aktualna cena:</p>
+                <p class="text-4xl font-bold text-red-600"
+                   th:text="${#numbers.formatDecimal(auction.aktualnaCena, 1, 'WHITESPACE', 2, 'COMMA')} + ' zł'">
+                    0,00 zł
+                </p>
+                <p class="text-sm text-gray-500 mt-2">
+                    Sprzedający: <span class="font-semibold text-gray-700" th:text="${auction.product.seller.username}">Sprzedawca</span>
+                </p>
+            </div>
+
+            <form th:action="@{/auction/licytuj/{id}(id=${auction.id})}" method="post" class="mb-8">
+                <label class="block mb-2 font-semibold text-gray-700">Twoja oferta:</label>
+                <div class="flex gap-2">
+                    <input type="number" step="0.01" name="kwota"
+                           class="flex-1 border p-3 rounded focus:ring-2 focus:ring-orange-500 outline-none"
+                           th:min="${auction.aktualnaCena + 1}"
+                           placeholder="Podaj kwotę...">
+                    <button type="submit" class="bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 px-6 rounded transition">
+                        PRZEBIJ
+                    </button>
+                </div>
+            </form>
+
+            <h3 class="font-bold text-lg mb-4 border-b pb-2">Historia licytacji</h3>
+            <div class="overflow-y-auto max-h-64">
+                <table class="w-full text-left text-sm">
+                    <thead class="bg-gray-200">
+                    <tr>
+                        <th class="p-2 rounded-tl">Użytkownik</th>
+                        <th class="p-2">Kwota</th>
+                        <th class="p-2 rounded-tr">Czas</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="offer : ${offers}" class="border-b hover:bg-gray-100">
+                        <td class="p-2" th:text="${offer.licytujacy.username}">User</td>
+                        <td class="p-2 font-bold" th:text="${offer.kwota} + ' zł'">Kwota</td>
+                        <td class="p-2 text-gray-500" th:text="${#temporals.format(offer.dataZlozenia, 'yyyy-MM-dd HH:mm')}">Data</td>
+                    </tr>
+                    <tr th:if="${offers.isEmpty()}">
+                        <td colspan="3" class="p-4 text-center text-gray-500 italic">Brak ofert. Bądź pierwszy!</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

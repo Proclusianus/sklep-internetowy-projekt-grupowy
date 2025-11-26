@@ -1,17 +1,18 @@
 package wat.grupa.trzy.wielkieakcjeitransakcje.entities.user;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "admin_data")
 public class AdminData {
-    private Integer adminID;
-    private ContactPerson person;
 
-    public AdminData(Integer adminID, ContactPerson person) {
-        this.adminID = adminID;
-        this.person = person;
-    }
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    // Getters
-    public Integer getAdminID() { return adminID; }
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "contact_person_id")
+    private ContactPerson contactPersonAdmin;
 
-    // Setters
-    public void setAdminID(Integer adminID) { this.adminID = adminID; }
+    public AdminData() {}
 }

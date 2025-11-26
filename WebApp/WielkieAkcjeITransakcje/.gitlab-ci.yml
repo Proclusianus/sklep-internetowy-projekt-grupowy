@@ -1,0 +1,32 @@
+image: eclipse-temurin:21-jdk-jammy
+
+stages:
+  - test
+  - report
+
+cache:
+  paths:
+    - .m2/repository
+
+
+unit_tests:
+  stage: test
+  script:
+    - cd WebApp/WielkieAkcjeITransakcje
+    - chmod +x mvnw
+    - ./mvnw test
+
+
+generate_report:
+  stage: report
+  script:
+    - cd WebApp/WielkieAkcjeITransakcje
+    - chmod +x mvnw
+    - ./mvnw site
+  artifacts:
+    name: "Raport_Jakosci_Kodu"
+    when: always
+    paths:
+
+      - target/site/
+    expire_in: 1 week

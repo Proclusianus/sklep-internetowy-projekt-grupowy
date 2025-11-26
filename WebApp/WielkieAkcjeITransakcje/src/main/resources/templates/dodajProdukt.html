@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Sprzedaj Produkt</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+
+<div th:replace="~{userpanel/fragments/header :: header}"></div>
+
+<main class="container mx-auto px-6 py-8 mt-4">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-2xl mx-auto">
+        <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">Wystaw przedmiot na sprzedaż</h2>
+
+        <form th:action="@{/sprzedaj}" th:object="${nowyProduct}" method="POST" class="space-y-6">
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Nazwa przedmiotu</label>
+                <input type="text" th:field="*{name}" required
+                       class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Cena (zł)</label>
+                    <input type="number" step="0.01" min="0" th:field="*{cena}" required
+                           class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Kategoria</label>
+                    <select th:field="*{kategoria}" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md bg-white focus:ring-blue-500 focus:border-blue-500">
+                        <option th:each="kat : ${kategorie}" th:value="${kat}" th:text="${kat}"></option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- --- NOWE POLE WYBORU --- -->
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Rodzaj ogłoszenia</label>
+                <select th:field="*{typSprzedazy}" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md bg-white focus:ring-blue-500 focus:border-blue-500">
+                    <option value="KUP_TERAZ">Tylko "Kup Teraz"</option>
+                    <option value="LICYTACJA">Licytacja (Aukcja)</option>
+                    <option value="OBA">Licytacja + Kup Teraz</option>
+                </select>
+                <p class="text-xs text-gray-500 mt-1">W przypadku licytacji, podana cena będzie ceną wywoławczą.</p>
+            </div>
+            <!-- ------------------------ -->
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Opis</label>
+                <textarea th:field="*{description}" rows="5" required
+                          class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"></textarea>
+            </div>
+
+            <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none">
+                Wystaw przedmiot
+            </button>
+        </form>
+    </div>
+</main>
+
+</body>
+</html>

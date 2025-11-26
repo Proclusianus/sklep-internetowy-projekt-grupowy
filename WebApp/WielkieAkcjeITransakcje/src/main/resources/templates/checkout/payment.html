@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Zamówienie - Płatność</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <th:block th:insert="~{fragments/common-head :: favicons}"></th:block>
+</head>
+<body class="bg-gray-100 font-sans">
+
+<div th:replace="~{userpanel/fragments/header :: header}"></div>
+
+<div class="container mx-auto px-4 mt-4" th:if="${errorMessage}">
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+        <strong class="font-bold">Ups!</strong>
+        <span class="block sm:inline" th:text="${errorMessage}"></span>
+    </div>
+</div>
+
+<main class="container mx-auto px-6 py-8 mt-4 text-center">
+    <div class="bg-white p-12 rounded-lg shadow-lg w-full max-w-2xl mx-auto">
+        <h2 class="text-3xl font-bold text-gray-800 mb-6">Podsumowanie i Płatność</h2>
+
+        <!-- Sekcja Kosztów -->
+        <div class="flex justify-between items-center mb-8 border-b pb-4">
+            <div class="text-left">
+                <p class="text-gray-600">Numer zamówienia:</p>
+                <p class="font-bold text-xl" th:text="'#' + ${order.id}">#123</p>
+            </div>
+            <div class="text-right">
+                <p class="text-gray-600">Do zapłaty:</p>
+                <p class="font-bold text-3xl text-orange-600">
+                    <span th:text="${order.totalAmount}">0</span> BOBUX
+                </p>
+            </div>
+        </div>
+
+        <!-- Sekcja Portfela -->
+        <div class="bg-gray-50 p-6 rounded-lg mb-8">
+            <p class="text-gray-600 mb-2">Twój portfel:</p>
+            <div class="flex justify-center items-baseline space-x-2">
+                <span class="text-2xl font-bold text-green-600" th:text="${wallet.balance}">0</span>
+                <span class="text-gray-500">BOBUX</span>
+            </div>
+
+            <!-- Ostrzeżenie o braku środków -->
+            <div th:if="${!canAfford}" class="mt-4 p-3 bg-red-100 text-red-700 rounded text-sm">
+                Masz za mało środków, aby opłacić to zamówienie.
+            </div>
+        </div>
+
+        <!-- Formularz Płatności -->
+        <form th:if="${canAfford}" th:action="@{/checkout/complete}" method="POST" class="space-y-6">
+
+            <!-- Wybór metody płatności (Autoryzacja) -->
+            <div class="text-left">
+                <label for="paymentMethod" class="block text-sm font-medium text-gray-700 mb-2">
+                    Wybierz metodę autoryzacji transakcji:
+                </label>
+                <select id="paymentMethod" name="methodId" required
+                        class="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
+                    <option value="" disabled selected>-- Wybierz kartę lub konto --</option>
+
+                    <!-- Karty -->
+                    <optgroup label="Karty płatnicze" th:if="${wallet != null and not #lists.isEmpty(wallet.ownedCards)}">
+                        <option th:each="card : ${wallet.ownedCards}"
+                                th:value="${'card_' + card.id}"
+                                th:text="${'Karta: ' + card.maskedNumber}">
+                        </option>
+                    </optgroup>
+
+                    <!-- Konta -->
+                    <optgroup label="Konta bankowe" th:if="${wallet != null and not #lists.isEmpty(wallet.ownedBankAccounts)}">
+                        <option th:each="account : ${wallet.ownedBankAccounts}"
+                                th:value="${'bank_' + account.id}"
+                                th:text="${'Konto: ' + account.iban}">
+                        </option>
+                    </optgroup>
+                </select>
+
+                <!-- Komunikat jeśli brak metod -->
+                <p th:if="${#lists.isEmpty(wallet.ownedCards) and #lists.isEmpty(wallet.ownedBankAccounts)}"
+                   class="text-red-500 text-sm mt-2">
+                    Nie masz dodanych żadnych metod płatności. Dodaj kartę lub konto w portfelu.
+                </p>
+            </div>
+
+            <button type="submit"
+                    th:disabled="${#lists.isEmpty(wallet.ownedCards) and #lists.isEmpty(wallet.ownedBankAccounts)}"
+                    class="w-full bg-green-600 text-white text-xl font-bold py-4 px-12 rounded-full hover:bg-green-700 transition-transform transform hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed">
+                ZAPŁAĆ TERAZ
+            </button>
+        </form>
+
+        <!-- Przycisk Doładowania (jeśli brak środków) -->
+        <div th:if="${!canAfford}">
+            <a href="/wallet" class="block w-full bg-blue-600 text-white text-xl font-bold py-4 px-12 rounded-full hover:bg-blue-700 transition-colors shadow-lg mb-4">
+                DOŁADUJ KONTO
+            </a>
+            <a href="/orderHistory" class="text-gray-500 hover:underline text-sm">
+                Zapłacę później (wróć do historii)
+            </a>
+        </div>
+    </div>
+</main>
+
+</body>
+</html>

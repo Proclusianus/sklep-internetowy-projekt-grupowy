@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+
+<!-- Definicja fragmentu o nazwie "header" -->
+<header th:fragment="header" class="bg-white shadow-sm sticky top-0 z-50">
+    <nav class="container mx-auto px-6 py-4 flex items-center justify-between">
+        <!-- Lewa strona nawigacji (linki panelu) -->
+        <div class="flex items-center space-x-8 text-gray-700">
+            <a href="/" class="text-base font-semibold hover:text-blue-600 transition-colors">Powrót do sklepu</a>
+            <a href="/userData" class="text-base font-semibold hover:text-blue-600 transition-colors">Dane użytkownika</a>
+            <a href="/wallet" class="text-base font-semibold hover:text-blue-600 transition-colors">Płatności</a>
+            <a href="/orderHistory" class="text-base font-semibold hover:text-blue-600 transition-colors">Historia zamówień</a>
+            <!-- W fragments/header.html -->
+            <a href="/sprzedaj" class="text-base font-semibold hover:text-blue-600 transition-colors"> + Sprzedaj przedmiot </a>
+            <!-- Link widoczny tylko dla użytkowników typu FIRMA -->
+            <a th:if="${#authentication.principal.user.accountType.name() == 'FIRMA'}"
+               href="/firmStats" class="text-base font-semibold hover:text-blue-600 transition-colors">
+                Statystyki Firmowe
+            </a>
+        </div>
+
+        <!-- Prawa strona nawigacji (Koszyk i Użytkownik) -->
+        <div class="flex items-center space-x-6 text-gray-700">
+            <a href="/koszyk" class="flex items-center space-x-2 hover:text-blue-600 transition-colors">
+                <!-- Ikona koszyka -->
+                <span class="font-semibold">Koszyk</span>
+            </a>
+
+            <!-- DYNAMICZNY BLOK UŻYTKOWNIKA -->
+            <div sec:authorize="isAuthenticated()" class="flex items-center space-x-4">
+                <span class="font-semibold">
+                    Witaj, <span sec:authentication="name"></span>!
+                </span>
+                <a th:href="@{/logout}" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors">Wyloguj</a>
+            </div>
+        </div>
+    </nav>
+</header>
+
+</body>
+</html>

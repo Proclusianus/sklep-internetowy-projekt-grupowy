@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+
+  mariadb-service:
+    image: mariadb:latest
+    container_name: mariadb-container
+    environment:
+      MARIADB_ROOT_PASSWORD: 'wcy'
+    volumes:
+      - /srv/docker/mariadb/data:/var/lib/mysql
+      - /srv/docker/mariadb/init:/docker-entrypoint-initdb.d
+    ports:
+      - "3306:3306"
+    restart: always
+    networks:
+      - my-app-network
+
+  webapp-service:
+    build: .
+    container_name: webapp-container
+    depends_on:
+      - mariadb-service
+    ports:
+      - "8080:8080"
+    environment:
+
+      SPRING_PROFILES_ACTIVE: docker
+    restart: always
+    networks:
+      - my-app-network
+networks:
+  my-app-network:
+    driver: bridge

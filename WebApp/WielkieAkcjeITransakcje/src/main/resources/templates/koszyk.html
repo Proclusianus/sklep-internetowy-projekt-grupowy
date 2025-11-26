@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>Koszyk</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <th:block th:insert="~{fragments/common-head :: favicons}"></th:block>
+</head>
+<body class="bg-gray-100">
+
+<div th:replace="~{userpanel/fragments/public-header :: public-header}"></div>
+
+<main class="container mx-auto p-8">
+    <h1 class="text-4xl font-bold mb-8">Twój Koszyk</h1>
+
+    <div th:if="${cartItems.isEmpty()}" class="text-center py-16">
+        <p class="text-2xl text-gray-500">Twój koszyk jest pusty.</p>
+        <a href="/kupno-sprzedaz" class="mt-4 inline-block bg-blue-500 text-white py-3 px-6 rounded hover:bg-blue-600">Wróć do sklepu</a>
+    </div>
+
+    <div th:if="${!cartItems.isEmpty()}">
+        <div class="bg-white p-6 rounded-lg shadow">
+            <div th:each="item : ${cartItems}" class="flex items-center py-4 border-b last:border-b-0">
+                <img src="https://via.placeholder.com/100" alt="Product" class="w-24 h-24 object-cover rounded">
+                <div class="ml-4 flex-grow">
+                    <h3 class="font-bold text-lg" th:text="${item.name}">Name Productu</h3>
+                    <p class="text-gray-600" th:text="${#numbers.formatDecimal(item.price, 1, 'WHITESPACE', 2, 'COMMA')} + ' zł'">Cena</p>
+                </div>
+                <form th:action="@{/cart/remove/{productId}(productId=${item.id})}" method="POST">
+                    <button type="submit" class="ml-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors">Usuń</button>
+                </form>
+            </div>
+        </div>
+
+
+        <div class="mt-8 text-right">
+            <a href="/checkout/details" class="inline-block bg-green-600 text-white text-xl font-bold py-4 px-8 rounded hover:bg-green-700">
+                KUP TERAZ
+            </a>
+        </div>
+    </div>
+</main>
+</body>
+</html>

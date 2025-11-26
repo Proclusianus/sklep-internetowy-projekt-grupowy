@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Aukcje</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <th:block th:insert="~{fragments/common-head :: favicons}"></th:block>
+</head>
+<body class="bg-gray-100">
+
+<!-- Używamy publicznego nagłówka -->
+<div th:replace="~{userpanel/fragments/public-header :: public-header}"></div>
+
+<main class="container mx-auto p-8">
+    <div class="flex flex-col md:flex-row gap-8">
+
+        <!-- Lewa kolumna: Kategorie i Wyszukiwarka -->
+        <aside class="w-full md:w-1/4">
+            <!-- Wyszukiwarka -->
+            <form th:action="@{/kupno-sprzedaz}" method="get" class="mb-8">
+                <input type="text" name="search" placeholder="Szukaj productów..." th:value="${searchQuery}"
+                       class="w-full px-4 py-2 border rounded-md">
+                <button type="submit" class="w-full mt-2 bg-blue-500 text-white py-2 rounded hover:bg-blue-600">Szukaj</button>
+            </form>
+
+            <!-- Lista kategorii -->
+            <h2 class="font-bold text-xl mb-4">Kategorie</h2>
+            <ul class="space-y-2">
+                <li><a th:href="@{/kupno-sprzedaz}" class="text-blue-600 hover:underline" th:classappend="${selectedCategory == null} ? 'font-bold'">Wszystkie</a></li>
+                <li th:each="kat : ${kategorie}">
+                    <a th:href="@{/kupno-sprzedaz(category=${kat})}" th:text="${kat}"
+                       class="text-blue-600 hover:underline" th:classappend="${selectedCategory == kat} ? 'font-bold'">
+                        Name Kategorii
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Prawa, główna kolumna: Lista productów -->
+        <div class="w-full md:w-3/4">
+            <h1 class="text-4xl font-bold mb-8">Lista Productów</h1>
+
+            <!-- Komunikat, jeśli nie znaleziono productów -->
+            <div th:if="${producty.isEmpty()}" class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4" role="alert">
+                <p>Nie znaleziono żadnych productów spełniających podane kryteria.</p>
+            </div>
+
+            <!-- Siatka z productami -->
+            <div th:if="${!producty.isEmpty()}" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Pętla po productach -->
+                <div th:each="product : ${producty}" class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col">
+                    <img th:src="${product.imageUrl != null ? product.imageUrl : 'https://via.placeholder.com/300'}"
+                         alt="Product"
+                         class="w-full h-48 object-cover">
+                    <div class="p-4 flex flex-col flex-grow">
+
+                        <h3 class="font-bold text-lg" th:text="${product.name}">Name Productu</h3>
+
+
+                        <p class="text-gray-600 mt-2 text-xl font-semibold" th:text="${#numbers.formatDecimal(product.price, 1, 'WHITESPACE', 2, 'COMMA')} + ' zł'">Cena</p>
+
+
+                        <p class="text-sm text-gray-500 mt-1" th:text="'Kategoria: ' + ${product.category}">Kategoria</p>
+
+
+                        <p class="text-gray-700 mt-2 flex-grow" th:text="${product.description}">Description productu...</p>
+
+                        <div class="mt-4">
+                            <!-- Formularz widoczny dla wszystkich -->
+                            <form th:action="@{/cart/add/{productId}(productId=${product.id})}" method="POST">
+                                <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600">Dodaj do koszyka</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>
